@@ -1,0 +1,28 @@
+name: backend
+version: 0.1.0.0
+github: "yourname/backend"
+license: BSD-3-Clause
+author: "Your Name"
+extra-source-files: []
+
+library:
+  exposed-modules: []
+  hs-source-dirs: src
+  dependencies:
+    - base >= 4.12 && < 5
+
+executables:
+  backend-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
+    dependencies:
+      - base
+      - scotty
+      - text
+      - aeson
+      - bytestring
+      - time
+      - transformers
+
+tests: {}
