@@ -1,0 +1,15 @@
+# Node
+node_modules/
+dist/
+build/
+
+# Vite
+/.vite/
+
+# Stack / Haskell
+/.stack-work/
+/.stack/
+dist-newstyle/
+
+# Editor
+.vscode/
