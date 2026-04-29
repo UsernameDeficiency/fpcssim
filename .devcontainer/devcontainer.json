@@ -14,7 +14,12 @@
 	"customizations": {
 		"vscode": {
 		"settings": {
-			"haskell.manageHLS": "GHCup"
+			"haskell.manageHLS": "GHCup",
+        	"haskell.formattingProvider": "ormolu",
+			"[haskell]": {
+				//"editor.formatOnSave": true,
+				"editor.defaultFormatter": "haskell.haskell"
+			}
 		},
 		"extensions": [
 			"haskell.haskell",
@@ -29,6 +34,7 @@
 	// More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "vscode",
 
+	// Make sure Haskell pre-requisites are installed before starting the container.
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y libgmp-dev zlib1g-dev && cd backend && echo 'builddir: /tmp/dist-newstyle' > cabal.project.local"
+	"updateContentCommand": "bash .devcontainer/setup.sh"
 }

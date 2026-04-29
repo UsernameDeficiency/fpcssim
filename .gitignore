@@ -9,6 +9,7 @@ build/
 # Stack / Haskell
 /.stack-work/
 /.stack/
+cabal.project.local
 dist-newstyle/
 
 # Editor
