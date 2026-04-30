@@ -8,5 +8,4 @@ sudo apt-get install -y libgmp-dev zlib1g-dev
 ghcup install hls 2.14.0.0 --set
 
 # Configure Cabal to build in /tmp to bypass Docker file-sync latency
-cd backend
 echo 'builddir: /tmp/dist-newstyle' > cabal.project.local
