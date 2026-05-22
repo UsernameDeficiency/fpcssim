@@ -8,7 +8,7 @@ import Data.List (sortBy)
 import Data.Map (Map)
 import Data.Ord (comparing)
 import GHC.Generics (Generic)
-import Network.Wai.Middleware.Cors (simpleCors)
+import Network.Wai.Middleware.Cors (cors, corsRequestHeaders, simpleCorsResourcePolicy)
 import Web.Scotty (ActionM, get, json, jsonData, middleware, post, scotty, text)
 
 -- ==========================================
@@ -98,7 +98,8 @@ instance FromJSON TournamentState
 generateRound1Matches :: [Team] -> String -> [Match]
 generateRound1Matches inputTeams stage =
   let sortedTeams = sortBy (comparing seed) inputTeams
-      (topHalf, bottomHalf) = splitAt (length sortedTeams `div` 2) sortedTeams
+      halfCount = length sortedTeams `div` 2
+      (topHalf, bottomHalf) = splitAt halfCount sortedTeams
 
       -- Determine format based on tournament stage
       matchFormat = if stage == "Stage3" then Bo3 else Bo1
@@ -116,7 +117,7 @@ generateRound1Matches inputTeams stage =
             status = Pending,
             winnerId = Nothing
           }
-   in zipWith createMatch ([1 .. 8] :: [Int]) (zip topHalf bottomHalf)
+   in zipWith createMatch ([1 .. halfCount] :: [Int]) (zip topHalf bottomHalf)
 
 -- | Initialize the entire tournament state
 initTournament :: String -> [Team] -> TournamentState
@@ -138,10 +139,11 @@ main :: IO ()
 main = do
   putStrLn "Starting FPCSSIM Backend on port 3000..."
   scotty 3000 $ do
-    middleware simpleCors
+    let customCors = cors (const $ Just $ simpleCorsResourcePolicy {corsRequestHeaders = ["Content-Type"]})
+    middleware customCors
 
     get "/api/health" $ do
-      text "FPCSSIM Haskell Backend is running smoothly!"
+      text "FPCSSIM Backend is running smoothly!"
 
     post "/api/init" $ do
       incomingTeams <- jsonData :: Web.Scotty.ActionM [Team]
